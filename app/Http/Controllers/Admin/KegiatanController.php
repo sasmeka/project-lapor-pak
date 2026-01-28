@@ -81,7 +81,13 @@ class KegiatanController extends Controller
             'deskripsi' => 'required',
         ]);
 
-        KegiatanRt::create($request->all());
+        $kegiatan = KegiatanRt::create($request->all());
+
+        activityAdmin(
+            'Menambahkan kegiatan: ' . $kegiatan->nama_kegiatan,
+            'KegiatanRt',
+            $kegiatan->id
+        );
 
         return redirect()->route('admin.kegiatan.index');
     }
@@ -101,6 +107,13 @@ class KegiatanController extends Controller
         ]);
 
         $kegiatan->update($request->all());
+
+        activityAdmin(
+            'Mengedit kegiatan: ' . $kegiatan->nama_kegiatan,
+            'KegiatanRt',
+            $kegiatan->id
+        );
+
 
         return redirect()->route('admin.kegiatan.index');
     }
@@ -122,6 +135,13 @@ class KegiatanController extends Controller
             'status' => $request->status
         ]);
 
+        activityAdmin(
+            'Mengubah status kegiatan "' . $kegiatan->nama_kegiatan . '" menjadi ' . $request->status,
+            'KegiatanRt',
+            $kegiatan->id
+        );
+
+
         return back()->with('success', 'Status kegiatan berhasil diperbarui');
     }
 
@@ -129,6 +149,13 @@ class KegiatanController extends Controller
     public function destroy(KegiatanRt $kegiatan)
     {
         $kegiatan->delete();
+
+        activityAdmin(
+            'Menghapus kegiatan: ' . $kegiatan->nama_kegiatan,
+            'KegiatanRt',
+            $kegiatan->id
+        );
+
         return back();
     }
 }

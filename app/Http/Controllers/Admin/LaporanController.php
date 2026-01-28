@@ -37,7 +37,7 @@ class LaporanController extends Controller
         }
 
         $laporans = $query
-            ->orderBy('tgl_pengaduan', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(4)
             ->withQueryString();
 
@@ -72,6 +72,13 @@ class LaporanController extends Controller
             'status' => $request->status
         ]);
 
+        activityAdmin(
+            'Mengubah status laporan ID ' . $laporan->id . ' menjadi ' . $request->status,
+            'Complaint',
+            $laporan->id
+        );
+
+
         return redirect()->back()->with('success', 'Status laporan berhasil diupdate.');
     }
 
@@ -83,6 +90,12 @@ class LaporanController extends Controller
         $laporan = Complaint::findOrFail($id);
 
         $laporan->delete(); // soft delete
+
+        activityAdmin(
+            'Menghapus laporan ID ' . $laporan->id,
+            'Complaint',
+            $laporan->id
+        );
 
         return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
     }
@@ -99,6 +112,12 @@ class LaporanController extends Controller
         $laporan = Complaint::onlyTrashed()->findOrFail($id);
         $laporan->restore();
 
+        activityAdmin(
+            'Memulihkan laporan ID ' . $laporan->id,
+            'Complaint',
+            $laporan->id
+        );
+
         return redirect()->back()->with('success', 'Laporan berhasil dipulihkan.');
     }
 
@@ -113,6 +132,12 @@ class LaporanController extends Controller
 
         $laporan = Complaint::withTrashed()->findOrFail($id);
         $laporan->forceDelete();
+
+        activityAdmin(
+            'Menghapus permanen laporan ID ' . $laporan->id,
+            'Complaint',
+            $laporan->id
+        );
 
         return redirect()->back()->with('success', 'Laporan berhasil di hapus');
     }

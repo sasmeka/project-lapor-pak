@@ -67,21 +67,61 @@
         font-size: 0.9rem;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 576px) {
+
         .admin-dashboard {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
         }
 
-        .icon-box {
-            width: 38px;
-            height: 38px;
-            font-size: 17px;
+        .card-stat {
+            padding: 14px !important;
+            border-radius: 12px;
         }
 
         .card-stat h5 {
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+
+        .icon-box {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+
+        .admin-dashboard small,
+        .admin-dashboard .text-muted {
+            font-size: 0.7rem;
+        }
+
+        .list-group-item {
+            padding: 10px 12px;
+            font-size: 0.78rem;
+        }
+
+        .list-group-item strong {
+            font-size: 0.82rem;
+        }
+
+        /* Judul Aktivitas */
+        .card h5 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        /* Pagination kecil */
+        .pagination {
+            --bs-pagination-padding-x: .55rem;
+            --bs-pagination-padding-y: .25rem;
+            font-size: 0.75rem;
+        }
+
+        /* Info halaman */
+        .d-flex small {
+            font-size: 0.7rem;
         }
     }
+
 </style>
 
 <div class="admin-dashboard">
@@ -148,18 +188,57 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-8">
+        <div class="col-12">
             <div class="card card-stat p-4">
-                <h6 class="fw-bold mb-3">Aktivitas Admin</h6>
+                <h5>Aktivitas Admin</h5>
 
-                @forelse ($activities ?? [] as $activity)
-                    <div class="activity-item">
-                        <div class="fw-semibold">{{ $activity->judul }}</div>
-                        <small class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
+                <ul class="list-group mt-4">
+
+                    @forelse($activities as $act)
+                        <li class="list-group-item">
+                            <strong>{{ $act->user->name }}</strong> 
+                            {{ $act->activity }}
+
+                            <br>
+                            <small class="text-muted">
+                                {{ \Carbon\Carbon::parse($act->activity_time)->format('d M Y, H:i:s') }}
+                                ({{ \Carbon\Carbon::parse($act->activity_time)->diffForHumans() }})
+                            </small>
+                        </li>
+
+                    @empty
+                        <li class="list-group-item text-muted text-center">
+                            Belum ada aktivitas admin.
+                        </li>
+                    @endforelse
+
+                </ul>
+
+
+                {{-- Pagination --}}
+                {{-- @if($activities->hasPages())
+                    <div class="mt-3">
+                        {{ $activities->links() }}
                     </div>
-                @empty
-                    <p class="text-muted mb-0">Belum ada aktivitas admin.</p>
-                @endforelse
+                @endif --}}
+
+                <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+
+                    @php
+                        $currentPage = $activities->currentPage();
+                        $totalPages = $activities->lastPage();
+                    @endphp
+
+                    <small class="text-muted">
+                        Menampilkan {{ $currentPage }} dari {{ $totalPages }} halaman
+                    </small>
+
+                    {{ $activities->links('vendor.pagination.bootstrap-5') }}
+
+
+                </div>
+
+                
 
             </div>
         </div>

@@ -26,6 +26,13 @@ class UserController extends Controller
         $user->is_active = !$user->is_active;
         $user->save();
 
+        activityAdmin(
+            'Mengubah status user ' . $user->name . ' menjadi ' . ($user->is_active ? 'Aktif' : 'Nonaktif'),
+            'User',
+            $user->id
+        );
+
+
         return back()->with('success', 'Status user berhasil diperbarui');
     }
 }

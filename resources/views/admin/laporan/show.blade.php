@@ -76,7 +76,6 @@ textarea {
 
 /* FOTO */
 .foto-box {
-    background: var(--soft-blue);
     padding: 10px;
     border-radius: 14px;
     text-align: center;

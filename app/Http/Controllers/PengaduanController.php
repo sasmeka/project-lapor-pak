@@ -25,7 +25,7 @@ class PengaduanController extends Controller
             $query->whereDate('tgl_pengaduan', '<=', $request->to);
         }
 
-        $pengaduan = $query->orderBy('tgl_pengaduan', 'desc')
+        $pengaduan = $query->orderBy('created_at', 'desc')
                            ->paginate(4)
                            ->withQueryString();
 
