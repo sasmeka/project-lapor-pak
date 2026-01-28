@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image; 
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class PengaduanController extends Controller
 {
@@ -13,7 +17,6 @@ class PengaduanController extends Controller
     {
         $query = Complaint::where('user_id', Auth::id());
 
-        // FILTER TANGGAL DIBUAT (AMAN)
         if ($request->filled('from')) {
             $query->whereDate('tgl_pengaduan', '>=', $request->from);
         }
@@ -22,11 +25,12 @@ class PengaduanController extends Controller
             $query->whereDate('tgl_pengaduan', '<=', $request->to);
         }
 
-        $pengaduan = $query->orderBy('tgl_pengaduan', 'desc')->paginate(4)->withQueryString();
+        $pengaduan = $query->orderBy('tgl_pengaduan', 'desc')
+                           ->paginate(4)
+                           ->withQueryString();
 
         return view('pengaduan.index', compact('pengaduan'));
     }
-
 
     public function create()
     {
@@ -35,31 +39,55 @@ class PengaduanController extends Controller
 
     public function store(Request $request)
     {
-        // VALIDASI
-        $request->validate([
-            'title'          => 'required|string|max:255',
-            'description'    => 'required|string',
-            'category'       => 'required|string|max:100',
-            'tgl_pengaduan'  => 'required|date',
-            'location'       => 'required|string|max:255',
-        ], [
-            'required' => ':attribute wajib diisi.',
-            'date'     => ':attribute harus berupa tanggal.',
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'tgl_pengaduan' => 'required|date',
+            'location' => 'required|string|max:255',
+            'description' => 'required|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ]);
 
-        // SIMPAN KE DATABASE
-        Complaint::create([
-            'user_id'        => Auth::id(),
-            'title'          => $request->title,
-            'description'    => $request->description,
-            'category'       => $request->category,
-            'tgl_pengaduan'  => $request->tgl_pengaduan,
-            'location'       => $request->location,
-            'status'         => 'baru',
-        ]);
+        $data['user_id'] = Auth::id();
+        $data['status'] = 'baru';
 
-        // REDIRECT
-        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dikirim.');
+        if ($request->hasFile('foto')) {
+
+        $file = $request->file('foto');
+
+        $filename = uniqid().'.jpg';
+
+        $path = storage_path('app/public/complaints/'.$filename);
+
+        if (!file_exists(dirname($path))) {
+            mkdir(dirname($path), 0755, true);
+        }
+
+        // CARA BARU INTERVENTION V3
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($file);
+
+        $image->scaleDown(width: 1280);
+
+        $image->toJpeg(quality: 70)->save($path);
+
+        $data['foto'] = 'complaints/'.$filename;
+    }
+
+
+        Complaint::create($data);
+
+        return redirect()->route('pengaduan.index')
+            ->with('success', 'Laporan berhasil dikirim!');
+    }
+
+    public function show(Complaint $pengaduan)
+    {
+        if ($pengaduan->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('pengaduan.show', compact('pengaduan'));
     }
 
     public function edit(Complaint $pengaduan)
@@ -83,9 +111,37 @@ class PengaduanController extends Controller
             'tgl_pengaduan' => 'required|date',
             'location'      => 'required|string|max:255',
             'description'   => 'required|string',
+            'foto'          => 'nullable|image|max:5120',
         ]);
 
-        // update sesuai kolom DB
+        if ($request->hasFile('foto')) {
+
+            // Hapus foto lama
+            if ($pengaduan->foto && Storage::exists('public/' . $pengaduan->foto)) {
+                Storage::delete('public/' . $pengaduan->foto);
+            }
+
+            $imageFile = $request->file('foto');
+            $filename  = time() . '.jpg';
+
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($imageFile->getRealPath());
+
+            $img->scale(width: 1200);
+
+            $quality = 80;
+            $encoded = $img->toJpeg($quality);
+
+            while (strlen($encoded) > 200 * 1024 && $quality > 20) {
+                $quality -= 5;
+                $encoded = $img->toJpeg($quality);
+            }
+
+            Storage::put('public/laporan/' . $filename, $encoded);
+
+            $data['foto'] = 'laporan/' . $filename;
+        }
+
         $pengaduan->update($data);
 
         return redirect()
@@ -97,7 +153,6 @@ class PengaduanController extends Controller
     {
         $pengaduan = Complaint::findOrFail($id);
 
-        // Optional: pastikan hanya pemilik yang bisa hapus
         if ($pengaduan->user_id !== Auth::id()) {
             abort(403);
         }
@@ -108,5 +163,4 @@ class PengaduanController extends Controller
             ->route('pengaduan.index')
             ->with('success', 'Pengaduan berhasil dihapus.');
     }
-
 }

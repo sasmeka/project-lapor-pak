@@ -239,6 +239,7 @@
                         </span>
                     @endif
 
+
                     {{-- UPDATE STATUS (HANYA DATA AKTIF) --}}
                     @if(!$laporan->trashed() && in_array(Auth::user()->role, ['admin','superAdmin']))
                         <form action="{{ route('laporan.updateStatus', $laporan->id) }}"
@@ -258,6 +259,11 @@
                             <button class="btn btn-primary btn-main">Update</button>
                         </form>
                     @endif
+
+                    <a href="{{ route('admin.laporan.show', $laporan->id) }}" class="btn btn-warning btn-action">
+                        <i class="bi bi-eye"></i> Detail
+                    </a>
+
 
                     {{-- AKSI DATA TERHAPUS (SUPER ADMIN) --}}
                     @if(Auth::user()->role === 'superAdmin' && $laporan->trashed())

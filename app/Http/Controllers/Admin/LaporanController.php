@@ -44,6 +44,17 @@ class LaporanController extends Controller
         return view('admin.laporan.index', compact('laporans'));
     }
 
+    public function show($id)
+    {
+        if (Auth::user()->role === 'superAdmin') {
+            $laporan = Complaint::withTrashed()->with('user')->findOrFail($id);
+        } else {
+            $laporan = Complaint::with('user')->findOrFail($id);
+        }
+
+        return view('admin.laporan.show', compact('laporan'));
+    }
+
 
     /**
      * Update status laporan

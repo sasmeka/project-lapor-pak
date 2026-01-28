@@ -19,6 +19,7 @@ class Complaint extends Model
         'tgl_pengaduan',
         'location',
         'status',
+        'foto',
     ];
 
     public function user()

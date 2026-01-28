@@ -203,6 +203,11 @@
                             {{ ucfirst($item->status) }}
                         </span>
 
+                        {{-- DETAIL --}}
+                        <a href="{{ route('pengaduan.show', $item->id) }}"
+                        class="btn btn-primary btn-action text-white">
+                            <i class="bi bi-eye"></i> Detail
+                        </a>
                         <a href="{{ route('pengaduan.edit', $item->id) }}"
                            class="btn btn-warning btn-action">
                             <i class="bi bi-pencil"></i> Edit

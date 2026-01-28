@@ -108,7 +108,7 @@
         <div class="card card-dashboard">
             <div class="card-body p-4">
 
-                <form action="{{ route('pengaduan.store') }}" method="POST">
+                <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     {{-- JUDUL --}}
@@ -174,6 +174,33 @@
                                   required></textarea>
                     </div>
 
+                    {{-- FOTO --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            Foto Pendukung <span class="text-muted">(Opsional)</span>
+                        </label>
+                        
+                        <input type="file"
+                            name="foto"
+                            class="form-control"
+                            accept="image/*"
+                            onchange="previewImage(event)">
+
+                        <small class="text-muted">
+                            Maksimal akan otomatis dikompres menjadi 200KB oleh sistem.
+                        </small>
+
+                        {{-- PREVIEW --}}
+                        <div class="mt-3">
+                            <img id="preview"
+                                src="#"
+                                alt="Preview Foto"
+                                class="img-fluid rounded shadow-sm d-none"
+                                style="max-height: 200px;">
+                        </div>
+                    </div>
+
+
                     {{-- ACTION --}}
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('dashboard') }}"
@@ -192,5 +219,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById('preview');
+
+        if (input.files && input.files[0]) {
+            preview.src = URL.createObjectURL(input.files[0]);
+            preview.classList.remove('d-none');
+        }
+    }
+</script>
+
 
 @endsection

@@ -22,6 +22,8 @@ Route::middleware(['auth', 'role:admin,superAdmin'])->group(function () {
     Route::patch('admin/laporan/{id}/status', [LaporanController::class, 'updateStatus'])->name('laporan.updateStatus');
     Route::post('/admin/laporan/{id}/restore', [LaporanController::class, 'restore'])->name('laporan.restore');
     Route::delete('/admin/laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+    Route::get('admin/laporan/{id}', [LaporanController::class, 'show'])->name('admin.laporan.show');
+
      // DELETE (SOFT DELETE)
     Route::delete('admin/laporan/{id}/force-delete', [LaporanController::class, 'forceDelete'])->name('laporan.forcedelete');
 
@@ -83,6 +85,9 @@ Route::middleware('auth', 'role:user')->group(function () {
 
         Route::get('/{pengaduan}/edit', [PengaduanController::class, 'edit'])->name('edit');
         Route::put('/{pengaduan}', [PengaduanController::class, 'update'])->name('update');
+
+        Route::get('/{pengaduan}', [PengaduanController::class, 'show'])->name('show');
+
 
         Route::delete('/{id}', [PengaduanController::class, 'destroy'])->name('destroy');
     });

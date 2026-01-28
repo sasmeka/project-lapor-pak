@@ -108,7 +108,7 @@
         <div class="card card-dashboard">
             <div class="card-body p-4">
 
-                <form action="{{ route('pengaduan.update', $pengaduan->id) }}" method="POST">
+                <form action="{{ route('pengaduan.update', $pengaduan->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -183,6 +183,43 @@
                                   required>{{ old('description', $pengaduan->description) }}</textarea>
                     </div>
 
+                    {{-- FOTO --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            Foto Pendukung <span class="text-muted">(Opsional)</span>
+                        </label>
+
+                        {{-- Foto lama --}}
+                        @if($pengaduan->foto)
+                            <div class="mb-2">
+                                <small class="text-muted">Foto saat ini:</small><br>
+                                <img src="{{ asset('storage/'.$pengaduan->foto) }}"
+                                    class="img-fluid rounded shadow-sm mb-2"
+                                    style="max-height: 180px;">
+                            </div>
+                        @endif
+
+                        {{-- Upload foto baru --}}
+                        <input type="file"
+                            name="foto"
+                            class="form-control"
+                            accept="image/*"
+                            onchange="previewImage(event)">
+
+                        <small class="text-muted">
+                            Jika diisi, foto lama akan diganti. Otomatis dikompres ≤200KB.
+                        </small>
+
+                        {{-- Preview foto baru --}}
+                        <div class="mt-3">
+                            <img id="preview"
+                                src="#"
+                                class="img-fluid rounded shadow-sm d-none"
+                                style="max-height: 200px;">
+                        </div>
+                    </div>
+
+
                     {{-- ACTION --}}
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('pengaduan.index') }}"
@@ -202,5 +239,14 @@
     </div>
 
 </div>
+
+
+<script>
+    function previewImage(event) {
+        const preview = document.getElementById('preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+        preview.classList.remove('d-none');
+    }
+</script>
 
 @endsection
