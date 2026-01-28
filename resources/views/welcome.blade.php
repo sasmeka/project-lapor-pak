@@ -655,11 +655,11 @@
             Hubungi WA Kami!
         </div>
 
-        <a href="https://api.whatsapp.com/send?phone=6285850369909&text=Halo%20Lapor%20Pak!%20saya%20ingin%20lapor!%20" 
+        <a href="https://api.whatsapp.com/send?phone=6285850369909&text=Halo%20Pak,%20saya%20ingin%20melaporkan%20suatu%20kejadian.%20Mohon%20bantuannya%20untuk%20tindak%20lanjut."
         target="_blank" 
         class="wa-icon">
             <img src="https://img.icons8.com/?size=100&id=16712&format=png&color=FFFFFF" alt="WA">
-        </a>
+        </https:>
     </div>
 
     <!-- Bootstrap 5 JS Bundle -->
