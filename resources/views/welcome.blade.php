@@ -20,62 +20,6 @@
             --light-gray: #f8f9fa;
         }
 
-        .wa-bubble-container {
-            position: fixed;
-            bottom: 30px;
-            right: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            z-index: 999999 !important;
-        }
-
-        /* Bubble putih */
-        .wa-bubble {
-            background: white;
-            padding: 5px 5px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            font-size: 15px;
-            font-weight: 400;
-            color: #000;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-
-        /* Segitiga kanan */
-        .wa-bubble::after {
-            content: "";
-            position: absolute;
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-left: 10px solid white;
-        }
-
-        /* Ikon WA bulat */
-        .wa-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #25D366;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-        }
-
-        .wa-icon img {
-            width: 35px;
-            height: 35px;
-        }
-
         body {
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
@@ -144,6 +88,7 @@
             color: white;
             box-shadow: 0 4px 15px rgba(211, 47, 47, 0.2);
         }
+        
 
         /* --- HERO SECTION WITH DECORATION --- */
         .hero-section {
@@ -151,7 +96,7 @@
             padding-bottom: 100px;
             background: #fff;
             position: relative;
-            overflow: hidden;
+            overflow: hidden; 
         }
 
         /* Dekorasi background abstrak */
@@ -304,7 +249,7 @@
             }
         }
 
-        /* --- STATS / KEUNGGULAN (Breaking the monotony) --- */
+        /* --- KEUNGGULAN --- */
         .stats-section {
             background: var(--gradient-red);
             color: white;
@@ -649,18 +594,6 @@
             <p class="mb-0 text-secondary small">Copyright &copy; 2026 RT 1 RW 7. Developed with Nasywa Dyah Putri.</p>
         </div>
     </footer>
-
-    <div class="wa-bubble-container">
-        <div class="wa-bubble">
-            Hubungi WA Kami!
-        </div>
-
-        <a href="https://api.whatsapp.com/send?phone=6285850369909&text=Halo%20Pak,%20saya%20ingin%20melaporkan%20suatu%20kejadian.%20Mohon%20bantuannya%20untuk%20tindak%20lanjut."
-        target="_blank" 
-        class="wa-icon">
-            <img src="https://img.icons8.com/?size=100&id=16712&format=png&color=FFFFFF" alt="WA">
-        </https:>
-    </div>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
