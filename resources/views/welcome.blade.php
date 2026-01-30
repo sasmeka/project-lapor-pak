@@ -232,6 +232,112 @@
             word-spacing: 3px;
         }
 
+        .berita-card {
+            border: none;
+            border-radius: 18px;
+            background: #fff;
+            overflow: hidden;
+            position: relative;
+            transition: all .4s ease;
+            
+            /* SHADOW BARU — lebih hidup */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .berita-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+        }
+
+
+        .berita-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-red);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s;
+        }
+
+        .berita-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Carousel spacing fix */
+        .carousel-item { padding: 10px 0; }
+
+        /* Biar tombol keluar dari area card */
+        #beritaSlider {
+            position: relative;
+            padding: 0 60px; /* ruang kiri kanan */
+        }
+
+        /* Posisi panah */
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: auto;
+            opacity: 1;
+        }
+
+        .carousel-control-prev {
+            left: -10px;
+        }
+
+        .carousel-control-next {
+            right: -10px;
+        }
+
+        /* Style tombol */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: #D32F2F;
+            background-size: 60% 60%;
+            border-radius: 50%;
+            padding: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: 0.3s;
+        }
+
+        .carousel-control-prev-icon:hover,
+        .carousel-control-next-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+
+            #beritaSlider {
+                padding: 0 15px; /* hapus ruang panah besar */
+            }
+
+            .carousel-item {
+                padding: 0;
+            }
+
+            .berita-card {
+                margin: 0 auto;
+                max-width: 95%;
+            }
+
+            /* Biar ga tinggi banget */
+            .berita-card .card-body {
+                padding: 18px;
+            }
+
+            .berita-card h5 {
+                font-size: 1rem;
+            }
+
+            .berita-card p {
+                font-size: 0.85rem;
+            }
+        }
+
+
+
         @media (min-width: 992px) {
             .steps-container {
                 position: relative;
@@ -313,7 +419,7 @@
                     <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="#jenis">Kategori</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#alur">Alur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#berita">Berita</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
                         <a href="{{ route('login') }}" class="btn btn-custom-red px-4">Masuk / Daftar</a>
@@ -508,58 +614,69 @@
             </div>
         </section>
     
-        <!-- ALUR PENGADUAN -->
-        <section id="alur" class="section-padding bg-white">
+        <!-- BERITA KEGIATAN RT -->
+        <section id="berita" class="section-padding bg-white">
             <div class="container">
                 <div class="text-center mb-5">
-                    <h6 class="text-danger fw-bold text-uppercase">Workflow</h6>
-                    <h2 class="fw-bold display-6">Alur Penyelesaian</h2>
+                    <h6 class="text-danger fw-bold text-uppercase">Berita RT</h6>
+                    <h2 class="fw-bold display-6">Kegiatan Warga Terbaru</h2>
+                    <p class="text-secondary col-lg-6 mx-auto">
+                        Informasi kegiatan, acara, dan aktivitas terbaru di lingkungan RT 1 RW 7.
+                    </p>
                 </div>
-                
-                <div class="row g-4 steps-container">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="step-card bg-white">
-                            <span class="step-number">01</span>
-                            <div class="mb-4 text-danger bg-danger bg-opacity-10 d-inline-block p-3 rounded-circle">
-                                <i class="bi bi-pencil-square fs-3"></i>
+
+                <div id="beritaSlider" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @if($kegiatans->count())
+                            @php
+                                $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhone/', request()->header('User-Agent'));
+                                $chunks = $isMobile ? $kegiatans->chunk(1) : $kegiatans->chunk(3);
+                            @endphp
+
+                            @foreach($chunks as $chunkIndex => $chunk)
+
+                            <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
+                                <div class="row g-4 justify-content-center">
+
+                                    @foreach($chunk as $item)
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="card berita-card h-100">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex justify-content-between mb-2 small text-muted">
+                                                    <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_kegiatan)->format('d M Y') }}</span>
+                                                    <span><i class="bi bi-clock me-1"></i> {{ $item->jam_kegiatan }}</span>
+                                                </div>
+                                                <h5 class="fw-bold mb-2 text-dark">{{ $item->name_kegiatan }}</h5>
+                                                <p class="text-muted small mb-2">
+                                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $item->tempat_kegiatan }}
+                                                </p>
+                                                <p class="text-secondary small">{{ Str::limit($item->deskripsi, 100) }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+
+                                </div>
                             </div>
-                            <h5 class="fw-bold mb-3">Tulis Laporan</h5>
-                            <p class="text-secondary small">Isi formulir dengan detail masalah, lokasi, dan lampirkan bukti foto jika ada.</p>
-                        </div>
+                            @endforeach
+
+                        @else
+                            <p class="text-center text-muted">Belum ada kegiatan terbaru.</p>
+                        @endif
+
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="step-card bg-white">
-                            <span class="step-number">02</span>
-                            <div class="mb-4 text-danger bg-danger bg-opacity-10 d-inline-block p-3 rounded-circle">
-                                <i class="bi bi-inbox-fill fs-3"></i>
-                            </div>
-                            <h5 class="fw-bold mb-3">Verifikasi</h5>
-                            <p class="text-secondary small">Admin/RT menerima notifikasi dan memvalidasi kebenaran data laporan.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="step-card bg-white">
-                            <span class="step-number">03</span>
-                            <div class="mb-4 text-danger bg-danger bg-opacity-10 d-inline-block p-3 rounded-circle">
-                                <i class="bi bi-gear-fill fs-3"></i>
-                            </div>
-                            <h5 class="fw-bold mb-3">Tindak Lanjut</h5>
-                            <p class="text-secondary small">Petugas turun ke lapangan atau masalah dibahas dalam rapat koordinasi.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="step-card bg-white">
-                            <span class="step-number">04</span>
-                            <div class="mb-4 text-danger bg-danger bg-opacity-10 d-inline-block p-3 rounded-circle">
-                                <i class="bi bi-check-lg fs-3"></i>
-                            </div>
-                            <h5 class="fw-bold mb-3">Selesai</h5>
-                            <p class="text-secondary small">Laporan dinyatakan selesai. Pelapor mendapat notifikasi hasil penanganan.</p>
-                        </div>
-                    </div>
+
+                    <!-- Arrow -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#beritaSlider" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-danger rounded-circle p-3"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#beritaSlider" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-danger rounded-circle p-3"></span>
+                    </button>
                 </div>
             </div>
         </section>
+
     
         <!-- CTA SECTION -->
         <section id="kontak" class="cta-section text-white text-center">
