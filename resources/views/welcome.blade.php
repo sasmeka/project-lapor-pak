@@ -232,6 +232,38 @@
             word-spacing: 3px;
         }
 
+        /* ===== MOBILE HORIZONTAL BERITA ===== */
+        .berita-scroll {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 20px 20px 20px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .berita-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .berita-scroll-item {
+            min-width: 80%;
+            max-width: 80%;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+        }
+
+        .berita-card h6,
+        .berita-card h5 {
+            white-space: normal !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+
+        /* Tombol carousel desktop biar ga nempel */
+        .carousel-control-prev { left: -40px; }
+        .carousel-control-next { right: -40px; }
+
         .berita-card {
             border: none;
             border-radius: 18px;
@@ -307,7 +339,7 @@
             transform: scale(1.1);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 991.98px) {
 
             #beritaSlider {
                 padding: 0 15px; /* hapus ruang panah besar */
@@ -320,6 +352,11 @@
             .berita-card {
                 margin: 0 auto;
                 max-width: 95%;
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next {
+                display: none;
             }
 
             /* Biar ga tinggi banget */
@@ -335,8 +372,6 @@
                 font-size: 0.85rem;
             }
         }
-
-
 
         @media (min-width: 992px) {
             .steps-container {
@@ -625,57 +660,72 @@
                     </p>
                 </div>
 
-                <div id="beritaSlider" class="carousel slide" data-bs-ride="carousel">
+                @if($kegiatans->count())
+
+                <!-- DESKTOP CAROUSEL -->
+                <div id="beritaSlider" class="carousel slide d-none d-lg-block" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        @if($kegiatans->count())
-                            @php
-                                $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhone/', request()->header('User-Agent'));
-                                $chunks = $isMobile ? $kegiatans->chunk(1) : $kegiatans->chunk(3);
-                            @endphp
-
-                            @foreach($chunks as $chunkIndex => $chunk)
-
-                            <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
-                                <div class="row g-4 justify-content-center">
-
-                                    @foreach($chunk as $item)
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="card berita-card h-100">
-                                            <div class="card-body p-4">
-                                                <div class="d-flex justify-content-between mb-2 small text-muted">
-                                                    <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_kegiatan)->format('d M Y') }}</span>
-                                                    <span><i class="bi bi-clock me-1"></i> {{ $item->jam_kegiatan }}</span>
-                                                </div>
-                                                <h5 class="fw-bold mb-2 text-dark">{{ $item->name_kegiatan }}</h5>
-                                                <p class="text-muted small mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $item->tempat_kegiatan }}
-                                                </p>
-                                                <p class="text-secondary small">{{ Str::limit($item->deskripsi, 100) }}</p>
+                        @foreach($kegiatans->chunk(3) as $chunkIndex => $chunk)
+                        <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
+                            <div class="row g-4 justify-content-center">
+                                @foreach($chunk as $item)
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card berita-card h-100">
+                                        <div class="card-body p-4">
+                                            <div class="d-flex justify-content-between mb-2 small text-muted">
+                                                <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_kegiatan)->format('d M Y') }}</span>
+                                                <span><i class="bi bi-clock me-1"></i> {{ $item->jam_kegiatan }}</span>
                                             </div>
+                                            <h5 class="fw-bold mb-2 text-dark">{{ $item->name_kegiatan }}</h5>
+                                            <p class="text-muted small mb-2">
+                                                <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $item->tempat_kegiatan }}
+                                            </p>
+                                            <p class="text-secondary small">{{ Str::limit($item->deskripsi, 100) }}</p>
                                         </div>
                                     </div>
-                                    @endforeach
-
                                 </div>
+                                @endforeach
                             </div>
-                            @endforeach
-
-                        @else
-                            <p class="text-center text-muted">Belum ada kegiatan terbaru.</p>
-                        @endif
-
+                        </div>
+                        @endforeach
                     </div>
 
-                    <!-- Arrow -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#beritaSlider" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon bg-danger rounded-circle p-3"></span>
+                        <span class="carousel-control-prev-icon"></span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#beritaSlider" data-bs-slide="next">
-                        <span class="carousel-control-next-icon bg-danger rounded-circle p-3"></span>
+                        <span class="carousel-control-next-icon"></span>
                     </button>
                 </div>
+
+                <!-- MOBILE HORIZONTAL SCROLL -->
+                <div class="berita-scroll d-lg-none">
+                    @foreach($kegiatans as $item)
+                    <div class="berita-scroll-item">
+                        <div class="card berita-card h-100">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between mb-2 small text-muted">
+                                    <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_kegiatan)->format('d M Y') }}</span>
+                                    <span><i class="bi bi-clock me-1"></i> {{ $item->jam_kegiatan }}</span>
+                                </div>
+                                <h6 class="fw-bold mb-2 text-dark">{{ $item->name_kegiatan }}</h6>
+                                <p class="text-muted small mb-1">
+                                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $item->tempat_kegiatan }}
+                                </p>
+                                <p class="text-secondary small">{{ Str::limit($item->deskripsi, 80) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                @else
+                    <p class="text-center text-muted">Belum ada kegiatan terbaru.</p>
+                @endif
+
             </div>
         </section>
+
 
     
         <!-- CTA SECTION -->
