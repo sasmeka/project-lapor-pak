@@ -9,39 +9,42 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-// use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', [LandingController::class, 'landing']);
 
-Route::middleware(['auth', 'role:admin,superAdmin'])->group(function () {
+Route::middleware(['auth','role:admin,superAdmin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('admin/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
-    Route::patch('admin/laporan/{id}/status', [LaporanController::class, 'updateStatus'])->name('laporan.updateStatus');
-    Route::post('/admin/laporan/{id}/restore', [LaporanController::class, 'restore'])->name('laporan.restore');
-    Route::delete('/admin/laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
-    Route::get('admin/laporan/{id}', [LaporanController::class, 'show'])->name('admin.laporan.show');
+    // LAPORAN
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.show');
+    Route::patch('/laporan/{id}/status', [LaporanController::class, 'updateStatus'])->name('laporan.updateStatus');
 
-     // DELETE (SOFT DELETE)
-    Route::delete('admin/laporan/{id}/force-delete', [LaporanController::class, 'forceDelete'])->name('laporan.forcedelete');
+    // SUPER ADMIN ONLY
+    Route::post('/laporan/{id}/restore', [LaporanController::class, 'restore'])->name('laporan.restore');
+    Route::delete('/laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+    Route::delete('/laporan/{id}/force-delete', [LaporanController::class, 'forceDelete'])->name('laporan.forcedelete');
 
-    Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user.index');
-    Route::patch('/admin/user/{user}/toggle', [UserController::class, 'toggle'])->name('admin.user.toggle');
+    // USER
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::patch('/user/{user}/toggle', [UserController::class, 'toggle'])->name('user.toggle');
 
-    Route::get('/admin/kegiatan', [KegiatanController::class, 'index'])->name('admin.kegiatan.index');
-    Route::get('/admin/kegiatan/create', [KegiatanController::class, 'create'])->name('admin.kegiatan.create');
-    Route::post('/admin/kegiatan', [KegiatanController::class, 'store'])->name('admin.kegiatan.store');
-    Route::get('/admin/kegiatan/{kegiatan}/edit', [KegiatanController::class, 'edit'])->name('admin.kegiatan.edit');
-    Route::put('/admin/kegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('admin.kegiatan.update');
-    Route::patch('/admin/kegiatan/{kegiatan}/status', [KegiatanController::class, 'updateStatus'])->name('admin.kegiatan.updateStatus');
-    Route::delete('/admin/kegiatan/{kegiatan}', [KegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
+    // KEGIATAN
+    Route::resource('kegiatan', KegiatanController::class);
+    Route::patch('/kegiatan/{kegiatan}/status', [KegiatanController::class, 'updateStatus'])->name('kegiatan.updateStatus');
 
-    Route::get('/admin/profile', function () {
-        return view('admin.profile.index');
-    })->name('admin.profile');
+    // KELOLA ADMIN → SUPER ADMIN ONLY
+    Route::resource('admins', AdminController::class)->except(['show','destroy']);
+    Route::patch('/admins/{admin}/toggle', [AdminController::class, 'toggleActive'])->name('admins.toggle');
 
+    Route::get('/profile', fn() => view('admin.profile.index'))->name('profile');
 });
+
 
 
 // Route::middleware(['auth', 'role:superAdmin'])->prefix('admin')->name('admin.')->group(function () {

@@ -242,7 +242,7 @@
 
                     {{-- UPDATE STATUS (HANYA DATA AKTIF) --}}
                     @if(!$laporan->trashed() && in_array(Auth::user()->role, ['admin','superAdmin']))
-                        <form action="{{ route('laporan.updateStatus', $laporan->id) }}"
+                        <form action="{{ route('admin.laporan.updateStatus', $laporan->id) }}"
                             method="POST"
                             class="d-flex align-items-center gap-2 laporan-status-form"
                             data-status="{{ $laporan->status }}">
@@ -268,7 +268,7 @@
                     {{-- AKSI DATA TERHAPUS (SUPER ADMIN) --}}
                     @if(Auth::user()->role === 'superAdmin' && $laporan->trashed())
 
-                        <form action="{{ route('laporan.restore', $laporan->id) }}"
+                        <form action="{{ route('admin.laporan.restore', $laporan->id) }}"
                             method="POST">
                             @csrf
                             <button class="btn btn-success btn-action">
@@ -276,7 +276,7 @@
                             </button>
                         </form>
 
-                        <form action="{{ route('laporan.forcedelete', $laporan->id) }}"
+                        <form action="{{ route('admin.laporan.forcedelete', $laporan->id) }}"
                             method="POST"
                             onsubmit="return confirm('Hapus permanen laporan ini?')">
                             @csrf
@@ -287,9 +287,9 @@
                         </form>
 
                     {{-- AKSI DATA AKTIF --}}
-                    @elseif(in_array(Auth::user()->role, ['admin','superAdmin']))
+                   @elseif(Auth::user()->role === 'superAdmin')
 
-                        <form action="{{ route('laporan.destroy', $laporan->id) }}"
+                        <form action="{{ route('admin.laporan.destroy', $laporan->id) }}"
                             method="POST"
                             onsubmit="return confirm('Yakin ingin menghapus laporan ini?')">
                             @csrf

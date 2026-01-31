@@ -10,17 +10,27 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
+        // Belum login → lempar ke login
         if (!Auth::check()) {
-            abort(403);
+            return redirect()->route('login');
         }
 
-        if (!Auth::user()->is_active) {
+        $user = Auth::user();
+
+        // User nonaktif
+        if (!$user->is_active) {
             Auth::logout();
-            abort(403);
+            abort(403, 'Akun dinonaktifkan.');
         }
 
-        if (!in_array(Auth::user()->role, $roles)) {
-            abort(403);
+        // Kalau route tidak kirim role parameter → biarkan lewat
+        if (empty($roles)) {
+            return $next($request);
+        }
+
+        // Role tidak sesuai
+        if (!in_array($user->role, $roles)) {
+            abort(403, 'Tidak punya akses.');
         }
 
         return $next($request);
