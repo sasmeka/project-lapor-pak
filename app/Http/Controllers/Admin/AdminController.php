@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
     public function index()
     {
         $admins = User::whereIn('role', ['admin','superAdmin'])->latest()->get();
@@ -32,7 +33,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'admin',          // DEFAULT ADMIN
+            'role' => 'admin',
             'is_active' => true,
         ]);
 
@@ -72,13 +73,8 @@ class AdminController extends Controller
             ->with('success', 'Data admin diperbarui');
     }
 
-    /**
-     * AKTIF / NONAKTIF ADMIN
-     * HANYA superAdmin
-     */
     public function toggleActive(User $admin)
     {
-        // superAdmin tidak boleh menonaktifkan dirinya sendiri
         if ($admin->role === 'superAdmin') {
             return back()->with('error', 'Super Admin tidak dapat dinonaktifkan');
         }
@@ -88,5 +84,16 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', 'Status admin berhasil diubah');
+    }
+
+    public function destroy(User $admin)
+    {
+        if ($admin->role === 'superAdmin') {
+            return back()->with('error', 'Super Admin tidak dapat dihapus');
+        }
+
+        $admin->delete();
+
+        return back()->with('success', 'Admin berhasil dihapus');
     }
 }

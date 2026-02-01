@@ -39,8 +39,34 @@ Route::middleware(['auth','role:admin,superAdmin'])
     Route::patch('/kegiatan/{kegiatan}/status', [KegiatanController::class, 'updateStatus'])->name('kegiatan.updateStatus');
 
     // KELOLA ADMIN → SUPER ADMIN ONLY
-    Route::resource('admins', AdminController::class)->except(['show','destroy']);
-    Route::patch('/admins/{admin}/toggle', [AdminController::class, 'toggleActive'])->name('admins.toggle');
+    // List admin
+    Route::get('/admins', [AdminController::class, 'index'])
+        ->name('admins.index');
+
+    // Form tambah admin
+    Route::get('/admins/create', [AdminController::class, 'create'])
+        ->name('admins.create');
+
+    // Simpan admin baru
+    Route::post('/admins', [AdminController::class, 'store'])
+        ->name('admins.store');
+
+    // Form edit admin
+    Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])
+        ->name('admins.edit');
+
+    // Update admin
+    Route::put('/admins/{admin}', [AdminController::class, 'update'])
+        ->name('admins.update');
+
+    // Toggle aktif / nonaktif
+    Route::patch('/admins/{admin}/toggle', [AdminController::class, 'toggleActive'])
+        ->name('admins.toggle');
+
+    // Hapus admin (SUPER ADMIN ONLY)
+    Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])
+        ->middleware('role:superAdmin')
+        ->name('admins.destroy');
 
     Route::get('/profile', fn() => view('admin.profile.index'))->name('profile');
 });

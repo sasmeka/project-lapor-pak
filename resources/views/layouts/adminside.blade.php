@@ -171,9 +171,13 @@
                     <i class="bi bi-people"></i> Daftar User
                 </a>
 
-                {{-- <a href="{{ route('admin.admins.index') }}" class="{{ request()->routeIs('admin.admins.index') ? 'active' : '' }}">
-                    <i class="bi bi-people"></i> Daftar Admin
-                </a> --}}
+                @if(auth()->user()->role === 'superAdmin')
+                    <a href="{{ route('admin.admins.index') }}" 
+                    class="{{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">
+                        <i class="bi bi-people"></i> Daftar Admin
+                    </a>
+                @endif
+
 
                 <a href="{{ route('admin.kegiatan.index') }}" class="{{ request()->routeIs('admin.kegiatan.index') ? 'active' : '' }}">
                     <i class="bi bi-activity"></i> Kegiatan RT

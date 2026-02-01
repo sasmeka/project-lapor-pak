@@ -46,8 +46,9 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        //REDIRECT BERDASARKAN ROLE
-        if (Auth::user()->role === 'superAdmin') {
+        // REDIRECT BERDASARKAN ROLE
+        if (in_array($user->role, ['admin', 'superAdmin'])) {
+            $request->session()->regenerate();
             return redirect()->intended('/admin/dashboard');
         }
 
