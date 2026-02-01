@@ -42,7 +42,7 @@
 }
 </style>
 
-<div class="container py-4">
+<div class="py-3">
 
     <div class="d-flex justify-content-start mb-3">
         <a href="{{ route('admin.admins.create') }}" class="btn btn-primary">

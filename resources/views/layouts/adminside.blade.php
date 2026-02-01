@@ -18,12 +18,14 @@
         .sidebar {
             width: 260px;
             min-height: 100vh;
-            background: linear-gradient(180deg, #0d6efd, #084298);
+            background-color: #dc3545; /* MERAH LAPOR PAK */
             color: #fff;
             position: fixed;
             display: flex;
             flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
         }
+
 
 
         .sidebar h4 {
@@ -42,11 +44,18 @@
             font-weight: 500;
         }
 
-        .sidebar a:hover,
-        .sidebar a.active {
-            background-color: rgba(255,255,255,0.2);
+        .sidebar a:hover {
+            background-color: rgba(255,255,255,0.1);
             color: #fff;
         }
+
+        .sidebar a.active {
+            background-color: #ffffff;
+            color: #dc3545 !important;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
 
         .sidebar-footer {
             padding: 1.25rem;
@@ -108,7 +117,7 @@
             }
 
             .navbar-admin {
-                background: linear-gradient(180deg, #0d6efd, #084298);
+                background-color: #dc3545;
                 color: #fff;
             }
 
