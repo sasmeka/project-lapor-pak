@@ -406,26 +406,27 @@
         }
 
         /* --- CTA SECTION --- */
-        .cta-section {
+        /* .cta-section {
             background: url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1920&q=80') no-repeat center center;
             background-size: cover;
             position: relative;
             padding: 100px 0;
-            background-attachment: fixed; /* Parallax effect */
-        }
+            background-attachment: fixed; 
+        } */
         
-        .cta-overlay {
+        /* .cta-overlay {
             background: linear-gradient(to right, rgba(211, 47, 47, 0.95), rgba(183, 28, 28, 0.85));
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-        }
+        } */
 
         /* --- FOOTER --- */
         footer {
-            background-color: #1a1a1a;
+            background-color: rgba(211, 47, 47, 0.95);
             color: white;
             padding: 60px 0 30px;
         }
+        
 
         /* Utilities */
         .section-padding { padding: 100px 0; }
@@ -620,34 +621,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- KEUNGGULAN (Stats/Feature) - BREAK THE MONOTONY -->
-        <section class="section-padding stats-section">
-            <div class="container position-relative z-1">
-                <div class="row text-center">
-                    <div class="col-md-3 mb-5 mb-md-0">
-                        <div class="display-4 fw-bold mb-2"><i class="bi bi-lightning-charge-fill"></i></div>
-                        <h4 class="fw-bold">Respon Cepat</h4>
-                        <p class="text-white-50">Tindak lanjut segera</p>
-                    </div>
-                    <div class="col-md-3 mb-5 mb-md-0">
-                        <div class="display-4 fw-bold mb-2"><i class="bi bi-eye-fill"></i></div>
-                        <h4 class="fw-bold">Transparan</h4>
-                        <p class="text-white-50">Pantau progres laporan</p>
-                    </div>
-                    <div class="col-md-3 mb-5 mb-md-0">
-                        <div class="display-4 fw-bold mb-2"><i class="bi bi-archive-fill"></i></div>
-                        <h4 class="fw-bold">Terdata</h4>
-                        <p class="text-white-50">Arsip digital rapi</p>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="display-4 fw-bold mb-2"><i class="bi bi-emoji-smile-fill"></i></div>
-                        <h4 class="fw-bold">Mudah</h4>
-                        <p class="text-white-50">User friendly</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     
         <!-- BERITA KEGIATAN RT -->
         <section id="berita" class="section-padding bg-white">
@@ -676,7 +649,7 @@
                                                 <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_kegiatan)->format('d M Y') }}</span>
                                                 <span><i class="bi bi-clock me-1"></i> {{ $item->jam_kegiatan }}</span>
                                             </div>
-                                            <h5 class="fw-bold mb-2 text-dark">{{ $item->name_kegiatan }}</h5>
+                                            <h6 class="fw-bold mb-2 text-dark">{{ $item->nama_kegiatan }}</h6>
                                             <p class="text-muted small mb-2">
                                                 <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $item->tempat_kegiatan }}
                                             </p>
@@ -708,7 +681,7 @@
                                     <span><i class="bi bi-calendar-event me-1"></i> {{ \Carbon\Carbon::parse($item->tgl_kegiatan)->format('d M Y') }}</span>
                                     <span><i class="bi bi-clock me-1"></i> {{ $item->jam_kegiatan }}</span>
                                 </div>
-                                <h6 class="fw-bold mb-2 text-dark">{{ $item->name_kegiatan }}</h6>
+                                <h6 class="fw-bold mb-2 text-dark">{{ $item->nama_kegiatan }}</h6>
                                 <p class="text-muted small mb-1">
                                     <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ $item->tempat_kegiatan }}
                                 </p>
@@ -729,7 +702,7 @@
 
     
         <!-- CTA SECTION -->
-        <section id="kontak" class="cta-section text-white text-center">
+        {{-- <section id="kontak" class="cta-section text-white text-center">
             <div class="cta-overlay"></div>
             <div class="container position-relative" style="z-index: 2;">
                 <h2 class="display-5 fw-bold mb-3">Ada Keluhan Lingkungan?</h2>
@@ -737,30 +710,39 @@
                     Jangan ragu untuk melapor. Partisipasi Anda sangat berarti untuk kenyamanan bersama di RT 1 RW 7.
                 </p>
             </div>
-        </section>
+        </section> --}}
     </main>
 
     <!-- FOOTER -->
     <footer>
-        <div class="container text-center">
+        <div class="container text-center text-white">
             <div class="mb-4">
                 <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle p-3 mb-3" style="width: 60px; height: 60px;">
                     <i class="bi bi-megaphone-fill fs-3 text-danger"></i>
                 </div>
-                <h4 class="fw-bold">LAPOR PAK!</h4>
+                <h4 class="fw-bold text-white">LAPOR PAK!</h4>
             </div>
-            <p class="mb-1 text-white-50">Sistem Pengaduan Masyarakat RT 1 RW 7</p>
-            <p class="text-secondary small mb-4">Jl. Salak 1, Perumahan Kamal, Banyu Ajuh, Kec. Kamal, Kabupaten Bangkalan, Jawa Timur</p>
+
+            <p class="mb-1 text-white">Sistem Pengaduan Masyarakat RT 1 RW 7</p>
+            <p class="small mb-4 text-white">
+                Jl. Salak 1, Perumahan Kamal, Banyu Ajuh, Kec. Kamal, Kabupaten Bangkalan, Jawa Timur
+            </p>
             
             <div class="d-flex justify-content-center gap-3 mb-4">
                 <a href="https://api.whatsapp.com/send?phone=6285850369909&text=Halo,%20%20saya%20ingin%20LAPOR!%20"
-                    target="_blank" class="text-white-50 hover-text-white"><i class="bi bi-whatsapp fs-5"></i></a>
+                target="_blank" class="text-white">
+                    <i class="bi bi-whatsapp fs-5"></i>
+                </a>
             </div>
 
-            <hr class="border-secondary opacity-25 my-4 w-75 mx-auto">
-            <p class="mb-0 text-secondary small">Copyright &copy; 2026 RT 1 RW 7. Developed with Nasywa Dyah Putri.</p>
+            <hr class="border-light opacity-25 my-4 w-75 mx-auto">
+
+            <p class="mb-0 small text-white">
+                Copyright &copy; 2026 RT 1 RW 7. Developed with Nasywa Dyah Putri.
+            </p>
         </div>
     </footer>
+
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

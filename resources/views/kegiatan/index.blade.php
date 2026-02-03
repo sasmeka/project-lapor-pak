@@ -23,9 +23,18 @@
     }
 
     .card-kegiatan h5 {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
+        line-height: 1.3;
+
+        white-space: normal;        
+        word-break: break-word;    
+        overflow-wrap: anywhere;   
+        flex: 1;                    
+        min-width: 0;               
     }
+
+
 
     .badge-status {
         border-radius: 20px;

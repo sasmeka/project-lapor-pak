@@ -38,13 +38,28 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
+        // if (!$user->is_active) {
+        //     Auth::logout();
+
+        //     throw ValidationException::withMessages([
+        //         'email' => 'Akun Anda saat ini dinonaktifkan. Silakan hubungi Ketua RT untuk proses aktivasi kembali.',
+        //     ]);
+        // }
+
         if (!$user->is_active) {
             Auth::logout();
 
+            if ($user->role === 'admin') {
+                $message = 'Akun admin Anda saat ini dinonaktifkan. Silakan hubungi Super Admin untuk proses aktivasi kembali.';
+            } else {
+                $message = 'Akun Anda saat ini dinonaktifkan. Silakan hubungi Ketua RT untuk proses aktivasi kembali.';
+            }
+
             throw ValidationException::withMessages([
-                'email' => 'Akun Anda saat ini dinonaktifkan. Silakan hubungi Ketua RT untuk proses aktivasi kembali.',
+                'email' => $message,
             ]);
         }
+
 
         // REDIRECT BERDASARKAN ROLE
         if (in_array($user->role, ['admin', 'superAdmin'])) {

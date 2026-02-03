@@ -5,7 +5,7 @@
 @section('content')
 <style>
     .admin-kegiatan {
-        font-size: 0.95rem; /* ⬅️ NAIK dikit */
+        font-size: 0.95rem; 
     }
 
     .admin-kegiatan small,
@@ -26,18 +26,32 @@
     }
 
     .admin-kegiatan .card-body {
-        padding: 16px; /* ⬅️ NAIK dikit */
+        padding: 16px; 
     }
 
-    .admin-kegiatan h5 {
-        font-size: 1.05rem; /* ⬅️ JUDUL LEBIH JELAS */
+    /* .admin-kegiatan h5 {
+        font-size: 1.05rem;
         margin-bottom: 6px;
+    } */
+
+    .admin-kegiatan h5 {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+
+        white-space: normal;        
+        word-break: break-word;    
+        overflow-wrap: anywhere;   
+        flex: 1;                    
+        min-width: 0;               
     }
+    
 
     .admin-kegiatan p {
         font-size: 0.85rem;
         margin-bottom: 6px;
     }
+    
 
     .admin-kegiatan .badge {
         font-size: 0.75rem;
