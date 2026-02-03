@@ -714,7 +714,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer>
+    <footer id="kontak">
         <div class="container text-center text-white">
             <div class="mb-4">
                 <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle p-3 mb-3" style="width: 60px; height: 60px;">
