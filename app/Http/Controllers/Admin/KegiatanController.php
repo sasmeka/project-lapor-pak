@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\KegiatanRt;
 use Carbon\Carbon;
+use App\Models\KegiatanRt;
 use Illuminate\Http\Request;
+use App\Events\KegiatanBaruEvent;
+use App\Http\Controllers\Controller;
 
 class KegiatanController extends Controller
 {
@@ -82,6 +83,9 @@ class KegiatanController extends Controller
         ]);
 
         $kegiatan = KegiatanRt::create($request->all());
+
+        broadcast(new KegiatanBaruEvent($kegiatan))->toOthers();
+
 
         activityAdmin(
             'Menambahkan kegiatan: ' . $kegiatan->nama_kegiatan,

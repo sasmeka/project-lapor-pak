@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - LAPOR PAK!</title>
+
+    @vite(['resources/js/app.js'])
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -87,9 +90,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* ===============================
-        FOOTER USER & LOGOUT
-        ================================ */
         .sidebar-footer {
             padding: 1.5rem;
             background-color: rgba(0,0,0,0.05);
@@ -111,9 +111,6 @@
             font-weight: 500;
         }
 
-        /* ===============================
-        MAIN CONTENT
-        ================================ */
         .main-content {
             margin-left: 16rem;
             padding: 2rem;
@@ -121,9 +118,6 @@
             transition: all 0.3s ease;
         }
 
-        /* ===============================
-        MOBILE HEADER
-        ================================ */
         .mobile-header {
             display: none;
             background-color: #dc3545;
@@ -140,9 +134,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* ===============================
-        OVERLAY MOBILE
-        ================================ */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -250,6 +241,52 @@
             overlay.classList.remove('show');
         });
     </script>
+
+    <audio id="notifSound" src="{{ asset('notif-kegiatan.mp3') }}"></audio>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        function waitForEcho() {
+            if (typeof window.Echo !== "undefined") {
+                console.log("Echo ready");
+
+                window.Echo.channel('kegiatan-channel')
+                    .listen('.kegiatan-baru', (e) => {
+
+                        console.log("EVENT MASUK:", e);
+
+                        const notifSound = document.getElementById("notifSound");
+                        notifSound.play().catch(()=>{});
+
+                        let toast = document.createElement("div");
+                        toast.innerHTML = `
+                            <div style="
+                                position:fixed;
+                                bottom:20px;
+                                right:20px;
+                                background:#16a34a;
+                                color:white;
+                                padding:12px 20px;
+                                border-radius:8px;
+                                box-shadow:0 5px 15px rgba(0,0,0,.2);
+                                z-index:9999;">
+                                📢 Kegiatan baru: ${e.kegiatan.nama_kegiatan}
+                            </div>
+                        `;
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 5000);
+                    });
+
+            } else {
+                setTimeout(waitForEcho, 200); // tunggu Echo siap
+            }
+        }
+
+        waitForEcho();
+    });
+    </script>
+
     
 </body>
 </html>

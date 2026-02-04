@@ -5,8 +5,6 @@
 @section('content')
 <div class="container py-4">
     <div class="card-user">
-        <h5 class="fw-bold mb-3">Edit Admin</h5>
-
         <form action="{{ route('admin.admins.update', $admin->id) }}" method="POST">
             @csrf
             @method('PUT')

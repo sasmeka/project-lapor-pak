@@ -738,7 +738,7 @@
             <hr class="border-light opacity-25 my-4 w-75 mx-auto">
 
             <p class="mb-0 small text-white">
-                Copyright &copy; 2026 RT 1 RW 7. Developed with Nasywa Dyah Putri.
+                Copyright &copy; 2026 XII-RPL. Developed with Nasywa Dyah Putri.
             </p>
         </div>
     </footer>
