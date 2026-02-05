@@ -19,4 +19,10 @@ class KegiatanRt extends Model
         'deskripsi',
         'status'
     ];
+
+    public function reads()
+    {
+        return $this->hasMany(KegiatanRead::class, 'kegiatan_id');
+    }
+
 }

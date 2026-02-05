@@ -59,7 +59,11 @@ class LaporanController extends Controller
         ]);
 
         $laporan = Complaint::withTrashed()->findOrFail($id);
-        $laporan->update(['status' => $request->status]);
+
+        $laporan->update([
+            'status' => $request->status,
+            'status_seen' => false // ← INI YANG KURANG
+        ]);
 
         activityAdmin(
             'Mengubah status laporan ID ' . $laporan->id . ' menjadi ' . $request->status,

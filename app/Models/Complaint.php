@@ -20,6 +20,7 @@ class Complaint extends Model
         'location',
         'status',
         'foto',
+        'status_seen',
     ];
 
     public function user()

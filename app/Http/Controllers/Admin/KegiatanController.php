@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use App\Models\KegiatanRt;
+use App\Models\KegiatanRead;
 use Illuminate\Http\Request;
 use App\Events\KegiatanBaruEvent;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class KegiatanController extends Controller
 {
@@ -43,6 +45,15 @@ class KegiatanController extends Controller
 
     public function userIndex(Request $request)
     {
+        $kegiatans = KegiatanRt::latest()->get();
+
+        foreach ($kegiatans as $kegiatan) {
+            KegiatanRead::firstOrCreate([
+                'user_id' => Auth::id(),
+                'kegiatan_id' => $kegiatan->id
+            ]);
+        }
+        
         $query = KegiatanRt::query();
 
         //filter dari tanggal 
@@ -138,6 +149,8 @@ class KegiatanController extends Controller
         $kegiatan->update([
             'status' => $request->status
         ]);
+
+        
 
         activityAdmin(
             'Mengubah status kegiatan "' . $kegiatan->nama_kegiatan . '" menjadi ' . $request->status,

@@ -197,6 +197,9 @@
             <a href="{{ route('pengaduan.index') }}"
             class="nav-link {{ request()->routeIs('pengaduan.index') ? 'active' : '' }}">
                 <i class="bi bi-list-ul me-3"></i> Laporan Saya
+                @if($newComplaintUpdates > 0)
+                    <span class="badge bg-secondary ms-4">{{ $newComplaintUpdates }}</span>
+                @endif
             </a>
 
             <a href="{{ route('pengaduan.create') }}"
@@ -206,6 +209,9 @@
             <a href="{{ route('kegiatan.user') }}"
             class="nav-link {{ request()->routeIs('kegiatan.user') ? 'active' : '' }}">
                 <i class="bi bi-activity me-3"></i> Kegiatan RT
+                 @if($newKegiatanCount > 0)
+                    <span class="badge bg-secondary ms-5">{{ $newKegiatanCount }}</span>
+                @endif
             </a>
             <a href="{{ route('profile.index') }}"
             class="nav-link {{ request()->routeIs('profile.index') ? 'active' : '' }}">

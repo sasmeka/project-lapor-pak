@@ -49,4 +49,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function kegiatanReads()
+    {
+        return $this->hasMany(KegiatanRead::class);
+    }
+
 }
