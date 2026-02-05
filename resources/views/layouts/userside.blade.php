@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - LAPOR PAK!</title>
 
-    @vite(['resources/js/app.js'])
+    {{-- @vite(['resources/js/app.js']) --}}
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -242,7 +242,7 @@
         });
     </script>
 
-    <audio id="notifSound" src="{{ asset('notif-kegiatan.mp3') }}"></audio>
+    {{-- <audio id="notifSound" src="{{ asset('notif-kegiatan.mp3') }}"></audio>
 
     <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -285,7 +285,7 @@
 
         waitForEcho();
     });
-    </script>
+    </script> --}}
 
     
 </body>

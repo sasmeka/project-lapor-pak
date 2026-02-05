@@ -435,6 +435,80 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* ===== MOBILE CARD TUNING ===== */
+        @media (max-width: 576px) {
+
+            body {
+                font-size: 14px;
+            }
+
+            h1 { font-size: 1.4rem !important; }
+            h2 { font-size: 1.25rem !important; }
+            h3 { font-size: 1.1rem !important; }
+            h4 { font-size: 1rem !important; }
+            h5 { font-size: 0.95rem !important; }
+            h6 { font-size: 0.85rem !important; }
+
+            p, span, a, li, small, label {
+                font-size: 0.9rem !important;
+            }
+
+            .btn {
+                font-size: 0.8rem !important;
+                padding: 6px 10px !important;
+            }
+
+            .card-title {
+                font-size: 0.95rem !important;
+            }
+
+            .card-text {
+                font-size: 0.8rem !important;
+            }
+
+            #beranda h1 {
+                font-size: 1.6rem !important;
+                line-height: 1.3 !important;
+            }
+
+            #beranda h2 {
+                font-size: 1rem !important;
+            }
+
+
+            #beranda .btn,
+            #beranda .btn a {
+                font-size: 0.8rem !important;
+                padding: 6px 12px !important;
+            }
+
+            /* kecilkan padding card */
+            #jenis .card {
+                padding: 18px 12px !important;
+            }
+
+            /* ICON LEBIH KECIL */
+            #jenis .icon-box {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+
+            /* JUDUL */
+            #jenis .card-title {
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+            }
+
+            /* DESKRIPSI */
+            #jenis .card-text {
+                font-size: 0.75rem;
+                line-height: 1.4;
+            }
+        }
+
         
         html { scroll-behavior: smooth; }
     </style>
@@ -557,9 +631,9 @@
                     <p class="text-secondary col-lg-6 mx-auto">Pilih kategori yang sesuai agar laporan Anda dapat segera ditindaklanjuti oleh tim terkait.</p>
                 </div>
     
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="row g-4">
                     <!-- Card 1 -->
-                    <div class="col">
+                    <div class="col-6 col-lg-4">
                         <div class="card hover-card h-100 p-4 text-center">
                             <div class="card-body">
                                 <div class="icon-box mx-auto shadow-sm">
@@ -571,7 +645,7 @@
                         </div>
                     </div>
                     <!-- Card 2 -->
-                    <div class="col">
+                    <div class="col-6 col-lg-4">
                         <div class="card hover-card h-100 p-4 text-center">
                             <div class="card-body">
                                 <div class="icon-box mx-auto shadow-sm">
@@ -583,7 +657,7 @@
                         </div>
                     </div>
                     <!-- Card 3 -->
-                    <div class="col">
+                    <div class="col-6 col-lg-4">
                         <div class="card hover-card h-100 p-4 text-center">
                             <div class="card-body">
                                 <div class="icon-box mx-auto shadow-sm">
@@ -595,7 +669,7 @@
                         </div>
                     </div>
                     <!-- Card 4 -->
-                    <div class="col-lg-6 mx-auto">
+                    <div class="col-lg-6 col-6">
                         <div class="card hover-card h-100 p-4 text-center">
                             <div class="card-body">
                                 <div class="icon-box mx-auto shadow-sm">
@@ -607,7 +681,7 @@
                         </div>
                     </div>
                     <!-- Card 5 -->
-                    <div class="col-lg-6 mx-auto">
+                    <div class="col-lg-6 mx-auto col-12 col-md-6">
                         <div class="card hover-card h-100 p-4 text-center">
                             <div class="card-body">
                                 <div class="icon-box mx-auto shadow-sm">

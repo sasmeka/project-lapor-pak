@@ -84,7 +84,7 @@ class KegiatanController extends Controller
 
         $kegiatan = KegiatanRt::create($request->all());
 
-        broadcast(new KegiatanBaruEvent($kegiatan))->toOthers();
+        // broadcast(new KegiatanBaruEvent($kegiatan))->toOthers();
 
 
         activityAdmin(
