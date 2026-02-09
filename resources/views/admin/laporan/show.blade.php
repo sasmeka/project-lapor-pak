@@ -163,7 +163,7 @@ textarea {
 
             <div class="d-flex justify-content-end mt-4">
                 <a href="{{ route('admin.laporan.index') }}" class="btn btn-primary btn-back">
-                    ← Kembali
+                    Kembali
                 </a>
             </div>
 

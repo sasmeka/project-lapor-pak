@@ -17,6 +17,8 @@ class PengaduanController extends Controller
     {
         $query = Complaint::where('user_id', Auth::id());
 
+        $userId = Auth::id();
+
         if ($request->filled('from')) {
             $query->whereDate('tgl_pengaduan', '>=', $request->from);
         }
@@ -24,6 +26,11 @@ class PengaduanController extends Controller
         if ($request->filled('to')) {
             $query->whereDate('tgl_pengaduan', '<=', $request->to);
         }
+
+         //TAMBAHKAN INI (mark notif as read)
+        Complaint::where('user_id', $userId)
+            ->where('status_seen', false)
+            ->update(['status_seen' => true]);
 
         $pengaduan = $query->orderBy('created_at', 'desc')
                            ->paginate(4)
@@ -85,6 +92,10 @@ class PengaduanController extends Controller
     {
         if ($pengaduan->user_id !== Auth::id()) {
             abort(403);
+        }
+
+        if (!$pengaduan->status_seen) {
+            $pengaduan->update(['status_seen' => true]);
         }
 
         return view('pengaduan.show', compact('pengaduan'));

@@ -38,14 +38,17 @@
                 <label class="form-label">Confirm Password</label>
                 <input type="password" name="password_confirmation" class="form-control">
             </div>
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{{ route('admin.admins.index') }}" class="btn btn-light btn-secondary-light ms-2">
+                    Batal
+                </a>
 
-            <button class="btn btn-primary">
-                <i class="bi bi-save"></i> Update
-            </button>
+                <button class="btn btn-primary">
+                    <i class="bi bi-save"></i> Update
+                </button>
 
-            <a href="{{ route('admin.admins.index') }}" class="btn btn-secondary ms-2">
-                Kembali
-            </a>
+            </div>
+            
         </form>
     </div>
 </div>
