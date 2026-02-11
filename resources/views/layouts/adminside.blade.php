@@ -192,6 +192,10 @@
                     <i class="bi bi-activity"></i> Kegiatan RT
                 </a>
 
+                <a href="{{ route('admin.cctv.index') }}" class="{{ request()->routeIs('admin.cctv.index') ? 'active' : '' }}">
+                    <i class="bi bi-camera-video"></i> CCTV
+                </a>
+
                 <a href="{{ route('admin.profile') }}" class="{{ request()->routeIs('admin.profile') ? 'active' : '' }}">
                     <i class="bi bi-person-circle"></i> Profile Admin
                 </a>

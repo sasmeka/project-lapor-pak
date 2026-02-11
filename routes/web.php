@@ -1,15 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CctvController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', [LandingController::class, 'landing']);
 
@@ -69,6 +70,10 @@ Route::middleware(['auth','role:admin,superAdmin'])
         ->name('admins.destroy');
 
     Route::get('/profile', fn() => view('admin.profile.index'))->name('profile');
+
+    //cctv route
+    Route::get('/cctv', [CctvController::class, 'index'])->name('cctv.index');
+
 });
 
 
