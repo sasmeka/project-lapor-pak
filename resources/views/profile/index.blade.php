@@ -88,9 +88,15 @@
             </small>
         </div>
 
-        <a href="{{ route('profile.edit') }}" class="btn btn-main">
-            <i class="bi bi-pencil me-1"></i> Edit Profil
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('profile.password') }}" class="btn btn-warning">
+                <i class="bi bi-key me-1"></i> Ubah Password
+            </a>
+
+            <a href="{{ route('profile.edit') }}" class="btn btn-main">
+                <i class="bi bi-pencil me-1"></i> Edit Profil
+            </a>
+        </div>
     </header>
 
     <!-- CONTENT -->
@@ -121,5 +127,44 @@
     </div>
 
 </div>
+
+
+@if(session('password_success'))
+
+<!-- Modal -->
+<div class="modal fade" id="passwordSuccessModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center p-4" style="border-radius:14px">
+
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success" style="font-size:60px;"></i>
+            </div>
+
+            <h5 class="fw-bold mb-2">Berhasil</h5>
+            <p class="text-muted mb-3">
+                Password berhasil diperbaharui
+            </p>
+
+            <button type="button" class="btn btn-main" data-bs-dismiss="modal">
+                OK
+            </button>
+
+        </div>
+    </div>
+</div>
+
+@endif
+
+@if(session('password_success'))
+<script>
+window.onload = function () {
+    var modalElement = document.getElementById('passwordSuccessModal');
+    if (modalElement) {
+        var modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
+};
+</script>
+@endif
 
 @endsection
