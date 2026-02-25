@@ -19,14 +19,14 @@ services:
       APP_ENV: local
       APP_KEY: base64:MW15XMb4ZRD1IpiyCBjkmh/ZA1vYu83UOIwmqZ/Ovtw=
       APP_DEBUG: "true"
-      APP_URL: http://localhost:8808
+      APP_URL: https://lapor-pak.sasmeka.my.id:8808
 
       DB_CONNECTION: mysql
-      DB_HOST: host.docker.internal
+      DB_HOST: mariadb
       DB_PORT: 3306
       DB_DATABASE: project_lapor_pak
-      DB_USERNAME: root
-      DB_PASSWORD: nasywa2008
+      DB_USERNAME: casaos
+      DB_PASSWORD: casaos
 
       SESSION_DRIVER: database
       CACHE_STORE: database
