@@ -3,14 +3,15 @@ services:
     build: .
     image: laravel_project_lapor_pak_image
     container_name: laravel_project_lapor_pak
+    working_dir: /var/www
     ports:
       - "8808:8000"
       - "8809:8809"
     volumes:
-      - .:/var/www
+      -  /data/laravel_project_lapor_pak:/var/www
     restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
     environment:
       APP_NAME: Laravel
       APP_ENV: local
@@ -34,8 +35,9 @@ services:
       REVERB_HOST: 0.0.0.0
       REVERB_PORT: 8809
       REVERB_SCHEME: http
-
     command: >
-      sh -c "php artisan migrate --force &&
-         php artisan reverb:start --host=0.0.0.0 --port=8809 &
-         php artisan serve --host=0.0.0.0 --port=8000"
+      sh -c "
+      php artisan migrate --force &&
+      php artisan reverb:start --host=0.0.0.0 --port=8809 &
+      exec php artisan serve --host=0.0.0.0 --port=8000
+      "
