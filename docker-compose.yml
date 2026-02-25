@@ -41,3 +41,8 @@ services:
       php artisan reverb:start --host=0.0.0.0 --port=8809 &
       exec php artisan serve --host=0.0.0.0 --port=8000
       "
+    networks: 
+      - internal-net
+networks:
+  internal-net:
+    external: true   # penting! agar Compose pakai network yang sudah ada
