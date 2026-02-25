@@ -3,7 +3,8 @@ version: '3.8'
 services:
   laravel-app:
     build: .
-    container_name: laravel_app
+    image: laravel_project_lapor_pak_image
+    container_name: laravel_project_lapor_pak
     ports:
       - "8808:8000"
       - "8809:8809"
