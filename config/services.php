@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'cctv' => [
+        'api_key' => env('CCTV_API_KEY'),
+    ],
+
 ];
