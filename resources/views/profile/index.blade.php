@@ -57,7 +57,7 @@
     font-weight: 600;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .profile {
         font-size: 0.85rem;
     }
@@ -66,9 +66,43 @@
         font-size: 1.2rem;
     }
 
-    .btn-main {
-        font-size: 0.8rem;
+    .btn-main, .btn-warning {
+        font-size: 0.75rem;
         padding: 6px 12px;
+    }
+
+
+    .profile-item h6 {
+        font-size: 0.9rem;
+    }
+} */
+
+@media (max-width: 700px) {
+    .profile {
+        font-size: 0.85rem;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        
+    }
+
+    .profile-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .profile-header .d-flex {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .profile-header .btn {
+        flex: 1;
+        font-size: 0.7rem;
+        padding: 6px 8px;
+        text-align: center;
     }
 
     .profile-item h6 {
@@ -80,7 +114,7 @@
 <div class="profile">
 
     <!-- HEADER -->
-    <header class="profile-header d-flex justify-content-between align-items-center mb-4">
+    <header class="profile-header d-flex justify-content-between mb-4">
         <div>
             <h2 class="mb-0">Profil Saya</h2>
             <small class="text-muted">
@@ -88,12 +122,12 @@
             </small>
         </div>
 
-        <div class="d-flex gap-2">
-            <a href="{{ route('profile.password') }}" class="btn btn-warning">
+        <div class="d-flex gap-2  align-items-center">
+            <a href="{{ route('profile.password') }}" class="btn btn-warning btn-sm">
                 <i class="bi bi-key me-1"></i> Ubah Password
             </a>
 
-            <a href="{{ route('profile.edit') }}" class="btn btn-main">
+            <a href="{{ route('profile.edit') }}" class="btn btn-main btn-sm">
                 <i class="bi bi-pencil me-1"></i> Edit Profil
             </a>
         </div>
