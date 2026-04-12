@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Pengaduan')
+@section('title', 'Edit Laporan')
 
 @section('content')
 
@@ -96,7 +96,7 @@
     <header class="navbar mb-4">
         <div>
             <h2 class="fw-bold text-black mb-0">
-                Edit Pengaduan
+                Edit Laporan
             </h2>
             <small class="text-muted">
                 Perbarui data pengaduan Anda.
