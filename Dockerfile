@@ -5,11 +5,11 @@ FROM node:20 AS node-builder
 
 WORKDIR /app
 
-# Copy hanya file yang diperlukan dulu (agar cache optimal)
+# Copy package.json dulu (biar cache optimal)
 COPY package*.json ./
 RUN npm install
 
-# Copy seluruh source
+# Copy semua file
 COPY . .
 
 # Build Vite
@@ -21,16 +21,19 @@ RUN npm run build
 # ==============================
 FROM php:8.4-cli
 
-# Install dependency sistem
+# Install dependencies + GD dengan JPEG support
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     zip \
     unzip \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
     default-mysql-client \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -43,17 +46,17 @@ WORKDIR /var/www
 # Copy source code
 COPY . .
 
-# Copy hasil build frontend dari stage node
+# Copy hasil build frontend dari Node stage
 COPY --from=node-builder /app/public/build /var/www/public/build
 
 # Install dependency Laravel (tanpa dev)
 RUN composer install --no-dev --optimize-autoloader
 
-# Permission (optional tapi sering dibutuhkan)
+# Permission penting Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Expose port
 EXPOSE 8000
 
-# Start Laravel
+# Jalankan Laravel
 CMD php artisan serve --host=0.0.0.0 --port=8000
