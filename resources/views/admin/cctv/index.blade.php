@@ -1,4 +1,4 @@
-{{-- @extends('layouts.adminside')
+@extends('layouts.adminside')
 
 @section('title', 'CCTV Live Monitor')
 
@@ -24,10 +24,10 @@
         video.src = videoSrc;
     }
 </script>
-@endsection --}}
+@endsection
 
 {{-- pake API --}}
-@extends('layouts.adminside')
+{{-- @extends('layouts.adminside')
 
 @section('title', 'CCTV Live Monitor')
 
@@ -47,5 +47,5 @@
         hls.loadSource(videoSrc);
         hls.attachMedia(video);
     }
-</script>
-@endsection
+</script> --}}
+{{-- @endsection --}}
