@@ -153,7 +153,7 @@ textarea {
                     <div class="mb-3">
                         <label class="form-label">Foto Bukti</label>
                         <div class="foto-box">
-                            <img src="{{ asset('storage/'.$laporan->foto) }}" class="img-fluid">
+                            <img src="{{ $laporan->foto }}" class="img-fluid">
                         </div>
                     </div>
                     @endif
