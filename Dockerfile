@@ -21,7 +21,7 @@ RUN npm run build
 # ==============================
 FROM php:8.4-cli
 
-# Install dependencies + GD dengan JPEG support
+# Install dependencies + GD (support gambar)
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -43,7 +43,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy source code
+# Copy source code Laravel
 COPY . .
 
 # Copy hasil build frontend dari Node stage
@@ -52,8 +52,14 @@ COPY --from=node-builder /app/public/build /var/www/public/build
 # Install dependency Laravel (tanpa dev)
 RUN composer install --no-dev --optimize-autoloader
 
+# Generate key (biar aman kalau belum ada)
+RUN php artisan key:generate || true
+
+# Link storage (buat gambar)
+RUN php artisan storage:link || true
+
 # Permission penting Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache public/storage
 
 # Expose port
 EXPOSE 8000
