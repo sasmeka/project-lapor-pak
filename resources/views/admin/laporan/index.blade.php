@@ -193,6 +193,34 @@
         </div>
     </form>
 
+    <form method="GET" class="mb-3 d-flex gap-2 flex-wrap">
+
+    <input type="hidden" name="nama" value="{{ request('nama') }}">
+    <input type="hidden" name="dari_tanggal" value="{{ request('dari_tanggal') }}">
+    <input type="hidden" name="sampai_tanggal" value="{{ request('sampai_tanggal') }}">
+
+    <button name="status" value=""
+        class="btn btn-sm {{ request('status') == '' ? 'btn-dark' : 'btn-outline-dark' }}">
+        Semua
+    </button>
+
+    <button name="status" value="baru"
+        class="btn btn-sm {{ request('status') == 'baru' ? 'btn-danger' : 'btn-outline-danger' }}">
+        Baru
+    </button>
+
+    <button name="status" value="diproses"
+        class="btn btn-sm {{ request('status') == 'diproses' ? 'btn-warning text-dark' : 'btn-outline-warning' }}">
+        Diproses
+    </button>
+
+    <button name="status" value="selesai"
+        class="btn btn-sm {{ request('status') == 'selesai' ? 'btn-success' : 'btn-outline-success' }}">
+        Selesai
+    </button>
+
+</form>
+
 
     {{-- ALERT --}}
     @if(session('error'))

@@ -33,6 +33,11 @@ class LaporanController extends Controller
             $query->whereDate('tgl_pengaduan', '<=', $request->sampai_tanggal);
         }
 
+        // FILTER STATUS
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         $laporans = $query->latest()->paginate(4)->withQueryString();
 
         return view('admin.laporan.index', compact('laporans'));
