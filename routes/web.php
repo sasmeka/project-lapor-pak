@@ -14,11 +14,17 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', [LandingController::class, 'landing']);
 
+/*
+|--------------------------------------------------------------------------
+| ADMIN & SUPER ADMIN
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth','role:admin,superAdmin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
+    // DASHBOARD
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // LAPORAN
@@ -26,7 +32,7 @@ Route::middleware(['auth','role:admin,superAdmin'])
     Route::get('/laporan/{id}', [LaporanController::class, 'show'])->name('laporan.show');
     Route::patch('/laporan/{id}/status', [LaporanController::class, 'updateStatus'])->name('laporan.updateStatus');
 
-    // SUPER ADMIN ONLY
+    // SUPER ADMIN ONLY (laporan)
     Route::post('/laporan/{id}/restore', [LaporanController::class, 'restore'])->name('laporan.restore');
     Route::delete('/laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
     Route::delete('/laporan/{id}/force-delete', [LaporanController::class, 'forceDelete'])->name('laporan.forcedelete');
@@ -39,61 +45,51 @@ Route::middleware(['auth','role:admin,superAdmin'])
     Route::resource('kegiatan', KegiatanController::class);
     Route::patch('/kegiatan/{kegiatan}/status', [KegiatanController::class, 'updateStatus'])->name('kegiatan.updateStatus');
 
-    // KELOLA ADMIN → SUPER ADMIN ONLY
-    // List admin
-    Route::get('/admins', [AdminController::class, 'index'])
-        ->name('admins.index');
+    // CCTV
+    Route::get('/cctv', [CctvController::class, 'index'])->name('cctv.index');
 
-    // Form tambah admin
-    Route::get('/admins/create', [AdminController::class, 'create'])
-        ->name('admins.create');
-
-    // Simpan admin baru
-    Route::post('/admins', [AdminController::class, 'store'])
-        ->name('admins.store');
-
-    // Form edit admin
-    Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])
-        ->name('admins.edit');
-
-    // Update admin
-    Route::put('/admins/{admin}', [AdminController::class, 'update'])
-        ->name('admins.update');
-
-    // Toggle aktif / nonaktif
-    Route::patch('/admins/{admin}/toggle', [AdminController::class, 'toggleActive'])
-        ->name('admins.toggle');
-
-    // Hapus admin (SUPER ADMIN ONLY)
-    Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])
-        ->middleware('role:superAdmin')
-        ->name('admins.destroy');
-
+    // PROFILE
     Route::get('/profile', fn() => view('admin.profile.index'))->name('profile');
 
-    //cctv route
-    Route::get('/cctv', [CctvController::class, 'index'])->name('cctv.index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUPER ADMIN ONLY (KELOLA ADMIN)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['role:superAdmin'])->group(function () {
+
+        Route::get('/admins', [AdminController::class, 'index'])->name('admins.index');
+
+        Route::get('/admins/create', [AdminController::class, 'create'])->name('admins.create');
+
+        Route::post('/admins', [AdminController::class, 'store'])->name('admins.store');
+
+        Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])->name('admins.edit');
+
+        Route::put('/admins/{admin}', [AdminController::class, 'update'])->name('admins.update');
+
+        Route::patch('/admins/{admin}/toggle', [AdminController::class, 'toggleActive'])->name('admins.toggle');
+
+        Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])->name('admins.destroy');
+
+    });
 
 });
 
 
+/*
+|--------------------------------------------------------------------------
+| USER
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth','role:user'])->group(function () {
 
-// Route::middleware(['auth', 'role:superAdmin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-//     Route::get('/admins', [AdminController::class, 'index'])->name('admins.index');
-//     Route::get('/admins/create', [AdminController::class, 'create'])->name('admins.create');
-//     Route::post('/admins', [AdminController::class, 'store'])->name('admins.store');
+    Route::get('/kegiatan-rt', [KegiatanController::class, 'userIndex'])->name('kegiatan.user');
 
-//     Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])->name('admins.edit');
-//     Route::put('/admins/{admin}', [AdminController::class, 'update'])->name('admins.update');
-
-//     // toggle aktif / nonaktif (TIDAK ADA DELETE)
-//     Route::patch('/admins/{admin}/toggle', [AdminController::class, 'toggleActive'])
-//         ->name('admins.toggle');
-// });
-
-
-Route::middleware('auth', 'role:user')->group(function () {
+    // PROFILE
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -101,33 +97,25 @@ Route::middleware('auth', 'role:user')->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/kegiatan-rt', [KegiatanController::class, 'userIndex'])->name('kegiatan.user');
-
-
-
+    // PENGADUAN
     Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
 
-        // List pengaduan
         Route::get('/', [PengaduanController::class, 'index'])->name('index');
 
-        // Form create pengaduan
         Route::get('/create', [PengaduanController::class, 'create'])->name('create');
 
-        // Simpan pengaduan
         Route::post('/', [PengaduanController::class, 'store'])->name('store');
 
         Route::get('/{pengaduan}/edit', [PengaduanController::class, 'edit'])->name('edit');
+
         Route::put('/{pengaduan}', [PengaduanController::class, 'update'])->name('update');
 
         Route::get('/{pengaduan}', [PengaduanController::class, 'show'])->name('show');
 
-
         Route::delete('/{id}', [PengaduanController::class, 'destroy'])->name('destroy');
+
     });
+
 });
-
-
 
 require __DIR__.'/auth.php';
