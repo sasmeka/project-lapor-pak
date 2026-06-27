@@ -14,11 +14,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', [LandingController::class, 'landing']);
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN & SUPER ADMIN
-|--------------------------------------------------------------------------
-*/
+/* ADMIN & SUPER ADMIN */
 Route::middleware(['auth','role:admin,superAdmin'])
     ->prefix('admin')
     ->name('admin.')
@@ -52,11 +48,7 @@ Route::middleware(['auth','role:admin,superAdmin'])
     Route::get('/profile', fn() => view('admin.profile.index'))->name('profile');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SUPER ADMIN ONLY (KELOLA ADMIN)
-    |--------------------------------------------------------------------------
-    */
+    /* SUPER ADMIN ONLY (KELOLA ADMIN */
     Route::middleware(['role:superAdmin'])->group(function () {
 
         Route::get('/admins', [AdminController::class, 'index'])->name('admins.index');
@@ -78,11 +70,7 @@ Route::middleware(['auth','role:admin,superAdmin'])
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| USER
-|--------------------------------------------------------------------------
-*/
+/* USER */
 Route::middleware(['auth','role:user'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

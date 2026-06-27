@@ -292,6 +292,12 @@
                         <i class="bi bi-eye"></i> Detail
                     </a>
 
+                    <a href="https://wa.me/{{ $laporan->wa_number }}?text={{ urlencode($laporan->whatsappMessage()) }}"
+                        target="_blank"
+                        class="btn btn-success btn-action">
+                        <i class="bi bi-whatsapp"></i> Generate WA
+                    </a>
+
 
                     {{-- AKSI DATA TERHAPUS (SUPER ADMIN) --}}
                     @if(Auth::user()->role === 'superAdmin' && $laporan->trashed())
@@ -315,7 +321,7 @@
                         </form>
 
                     {{-- AKSI DATA AKTIF --}}
-                   @elseif(Auth::user()->role === 'superAdmin')
+                   @elseif(in_array(Auth::user()->role, ['admin', 'superAdmin']))
 
                         <form action="{{ route('admin.laporan.destroy', $laporan->id) }}"
                             method="POST"

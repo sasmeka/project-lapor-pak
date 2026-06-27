@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-// use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Facades\Image; 
 use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class PengaduanController extends Controller
 {
@@ -60,41 +60,49 @@ class PengaduanController extends Controller
 
         if ($request->hasFile('foto')) {
 
-        $file = $request->file('foto');
+            $file = $request->file('foto');
 
-        $filename = uniqid().'.jpg';
+            $filename = uniqid().'.jpg';
 
-        // $path = storage_path('app/public/complaints/'.$filename);
+            // $path = storage_path('app/public/complaints/'.$filename);
 
-        // if (!file_exists(dirname($path))) {
-        //     mkdir(dirname($path), 0755, true);
-        // }
+            // if (!file_exists(dirname($path))) {
+            //     mkdir(dirname($path), 0755, true);
+            // }
 
-        // CARA BARU INTERVENTION V3
-        $manager = new ImageManager(new Driver());
-        $image = $manager->read($file);
+            // CARA BARU INTERVENTION V3
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
 
-        $image->scaleDown(width: 1280);
+            $image->scaleDown(width: 1280);
 
-        // $image->toJpeg(quality: 70)->save($path);
+            // $image->toJpeg(quality: 70)->save($path);
 
-        // $data['foto'] = 'complaints/'.$filename;
+            // $data['foto'] = 'complaints/'.$filename;
 
-        $manager = new ImageManager(new Driver());
-        $image = $manager->read($file);
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
 
-        // resize
-        $image->scaleDown(width: 1280);
+            // resize
+            $image->scaleDown(width: 1280);
 
-        // encode ke jpeg (BELUM disimpan file)
-        $encoded = $image->toJpeg(quality: 70);
+            // encode ke jpeg (BELUM disimpan file)
+            $encoded = $image->toJpeg(quality: 70);
 
-        // convert ke base64
-        $base64 = base64_encode($encoded);
+            // convert ke base64
+            $base64 = base64_encode($encoded);
 
-        // tambahin prefix
-        $data['foto'] = "data:image/jpeg;base64," . $base64;
-    }
+            // tambahin prefix
+            $data['foto'] = "data:image/jpeg;base64," . $base64;
+        }
+
+        Http::withHeaders([
+            'Authorization' => env('FONNTE_TOKEN')
+        ])->post('https://api.fonnte.com/send', [
+            'target' => '6285946377456',
+            'message' => 'Ada laporan baru dari ' . Auth::user()->name
+        ]);
+
 
 
         Complaint::create($data);
