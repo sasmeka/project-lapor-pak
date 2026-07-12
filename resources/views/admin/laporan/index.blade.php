@@ -295,7 +295,7 @@
                     <a href="https://wa.me/{{ $laporan->wa_number }}?text={{ urlencode($laporan->whatsappMessage()) }}"
                         target="_blank"
                         class="btn btn-success btn-action">
-                        <i class="bi bi-whatsapp"></i> Generate WA
+                        <i class="bi bi-whatsapp"></i> Chat di WA
                     </a>
 
 
